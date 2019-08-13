@@ -15,10 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls import include,url
 import google
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('google/', include('google.urls')),
-    path('', google.views.index)
+    path('', google.views.index),
+    # url("^soc/", include("social_django.urls", namespace="social"))
+    # path('social/', include('social_django.urls')),
+    url(r'^soc/', include('social_django.urls')),
+
 ]
