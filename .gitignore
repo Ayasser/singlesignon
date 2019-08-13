@@ -1,2 +1,5 @@
 ve
 *.pyc
+bin
+lib
+include

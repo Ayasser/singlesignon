@@ -22,8 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('google/', include('google.urls')),
     path('', google.views.index),
-    # url("^soc/", include("social_django.urls", namespace="social"))
-    # path('social/', include('social_django.urls')),
     url(r'^soc/', include('social_django.urls')),
 
 ]
