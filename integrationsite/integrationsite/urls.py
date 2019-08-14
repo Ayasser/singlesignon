@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-import google
+import googles
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('google/', include('google.urls')),
-    path('', google.views.index)
-]
+    path('google/', include('googles.urls')),
+    path('', googles.views.index),
+    ]

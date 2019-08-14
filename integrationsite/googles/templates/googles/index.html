@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-signin-scope" content="profile email">
+
+  <meta name="google-signin-client_id"
+    content="967716811149-eq31rs9gvhab359etprjh5gi2mcsfgun.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <!-- BEGIN Pre-requisites -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+  </script>
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer>
+  </script>
+    <script>
+      function start() {
+        gapi.load('auth2', function() {
+          auth2 = gapi.auth2.init({
+            client_id: '967716811149-eq31rs9gvhab359etprjh5gi2mcsfgun.apps.googleusercontent.com',
+            // Scopes to request in addition to 'profile' and 'email'
+            //scope: 'additional_scope'
+          });
+        });
+      }
+    </script>
+  
+  <!-- END Pre-requisites -->
+  <style>
+    /* body {
+        background: url('https://source.unsplash.com/RYyr-k3Ysqg/1920x1080') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+        -o-background-size: cover;
+      } */
+    .masthead {
+      height: 100vh;
+      min-height: 500px;
+      background-image: url('https://source.unsplash.com/BtbjCFUvBXs/1920x1080');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="masthead">
+    <div class="container h-100">
+      <div class="row h-100 align-items-center">
+        <div class="col-12 text-center">
+          
+          <h1 class="font-weight-light">Wazoku Integrations</h1>
+          {% if user.is_authenticated %}
+          <p>Logged as {{ user.username }}</p>
+          <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+
+          {% else %}
+          <button id="signinButton">Sign in with Google</button>
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+<div>
+<script>
+  $('#signinButton').click(function() {
+    // signInCallback defined in step 6.
+    auth2.grantOfflineAccess().then(signInCallback);
+  });
+</script>
+</div>
+<script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      }
+    </script>
+  </header>
+  <script>
+    function signInCallback(authResult) {
+      if (authResult['code']) {
+        console.log('code',authResult['code'])
+        // Hide the sign-in button now that the user is authorized, for example:
+        $('#signinButton').attr('style', 'display: none');
+    
+        // Send the code to the server
+        $.ajax({
+          type: 'Get',
+          url: 'http://localhost:8000/google/login/',
+          // Always include an `X-Requested-With` header in every AJAX request,
+          // to protect against CSRF attacks.
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          contentType: 'application/octet-stream; charset=utf-8',
+          success: function(result) {
+            // Handle or verify the server response.
+          },
+          // processData: false,
+          data: {code:authResult['code']}
+        });
+      } else {
+        // There was an error.
+      }
+    }
+    </script>
+    
+</body>
+
