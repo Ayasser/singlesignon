@@ -25,7 +25,7 @@ SECRET_KEY = 'bmfhhdykvs$xo13^hgn*gcy!1a@)0!epr67=i^64og3iptay9x'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['local.test.com']
+ALLOWED_HOSTS = ['local.test.com','localhost']
 
 
 # Application definition
@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'google',
+    'social_django',
+
 ]
 
 MIDDLEWARE = [
@@ -123,3 +125,14 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'google.User'
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '967716811149-eq31rs9gvhab359etprjh5gi2mcsfgun.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'kQATzsnfcLqyFPgDkEx7Te0Q'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'

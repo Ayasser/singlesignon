@@ -5,10 +5,19 @@ from django.template import loader
 from google import models
 from django.conf import settings
 from django.urls import reverse
+from django.shortcuts import render
+from .models import User
+from django.contrib.auth import logout as auth_logout
+
+
 
 def index(request):
-    template = loader.get_template('google/index.html')
     context = {
-        'logged_in': False,
+        'posts': User.objects.order_by('-date')
+        if request.user.is_authenticated else []
     }
-    return HttpResponse(template.render(context, request))
+
+    return render(request, 'google/index.html', context)
+def logout(request):
+    auth_logout(request)
+    return redirect('/')
